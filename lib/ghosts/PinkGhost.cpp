@@ -25,3 +25,4 @@ Position PinkGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
 
 Ghost* PinkGhost::clone() {
     return new PinkGhost(*this);
+}

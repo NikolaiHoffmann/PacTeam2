@@ -11,6 +11,32 @@ set(LIB_SOURCES
         ghosts/PinkGhost.hpp
         ghosts/RedGhost.cpp
         ghosts/RedGhost.hpp
+        Astar.cpp
+        Astar.hpp
+        BFS.cpp
+        BFS.hpp
+        Board.cpp
+        Board.hpp
+        Direction.cpp
+        Direction.hpp
+        Entity.cpp
+        Entity.hpp
+        Evaluation.cpp
+        Evaluation.hpp
+        EvaluationFunction.cpp
+        EvaluationFunction.hpp
+        Game.cpp
+        Game.hpp
+        PacmanAgent.cpp
+        PacmanAgent.hpp
+        PacmanKeyBoardAgent.cpp
+        PacmanKeyBoardAgent.hpp
+        PacmanMiniMaxAgent.cpp
+        PacmanMiniMaxAgent.hpp
+        PieceBoard.cpp
+        PieceBoard.hpp
+        Position.cpp
+        Position.hpp
         )
 
 add_library(lib_core ${LIB_SOURCES})

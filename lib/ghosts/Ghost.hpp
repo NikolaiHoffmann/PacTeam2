@@ -1,8 +1,8 @@
 #ifndef PACTEAM2_GHOST_HPP
 #define PACTEAM2_GHOST_HPP
 
-#include "Entity.hpp"
-#include "PieceBoard.hpp"
+#include "../Entity.hpp"
+#include "../PieceBoard.hpp"
 #include <chrono>
 
 #define FRIGHTENED_DURATION 3.0

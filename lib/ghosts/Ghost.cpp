@@ -1,5 +1,5 @@
 #include "Ghost.hpp"
-#include "Astar.hpp"
+#include "../Astar.hpp"
 #include <iostream>
 
 Ghost::Ghost(const Ghost& gh) : Entity(gh) {
