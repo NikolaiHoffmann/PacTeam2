@@ -7,6 +7,8 @@ PacmanMiniMaxAgent::PacmanMiniMaxAgent(EvaluationFunction* _ef) {
 }
 
 void PacmanMiniMaxAgent::updateState(Board* board) {
+    Evaluation alpha = Evaluation(-9999999);
+    Evaluation beta = Evaluation(9999999);
     std::vector<Board*> possibleStates = board->getPacmanChildStates();
     //int maxEval = INT_MIN;
     Evaluation maxEval = Evaluation(-9999999);
@@ -14,7 +16,7 @@ void PacmanMiniMaxAgent::updateState(Board* board) {
     std::vector<Board*>::iterator it = possibleStates.begin();
     for (; it != possibleStates.end(); ++it) {
         Board* currState = *it;
-        Evaluation currStateValue = minimax(currState, 6, false);
+        Evaluation currStateValue = minimax(currState, 6, alpha, beta, false);
         if (currStateValue.compare(maxEval) > 0) {
             maxEval = currStateValue;
             bestState = currState;
@@ -30,7 +32,7 @@ void PacmanMiniMaxAgent::updateState(Board* board) {
     board->movePlayer();
 }
 
-Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, bool maximizingPlayer) {
+Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, Evaluation alpha, Evaluation beta, bool maximizingPlayer) {
     if (depth == 0) {
         return ef->evaluate(state);
     }
@@ -42,8 +44,10 @@ Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, bool maximizingP
         std::vector<Board*>::iterator it = possibleStates.begin();
         for (; it != possibleStates.end(); ++it) {
             Board* currState = *it;
-            Evaluation currStateValue = minimax(currState, depth - 1, false);
+            Evaluation currStateValue = minimax(currState, depth - 1, alpha, beta, false);
             if (currStateValue.compare(maxEval) > 0) maxEval = currStateValue;
+            if (alpha.compare(currStateValue) > 0) alpha = currStateValue;
+            if (beta.compare(alpha) <= 0) break;
         }
         return maxEval;
     }
@@ -54,8 +58,10 @@ Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, bool maximizingP
         std::vector<Board*>::iterator it = possibleStates.begin();
         for (; it != possibleStates.end(); ++it) {
             Board* currState = *it;
-            Evaluation currStateValue = minimax(currState, depth - 1, true);
+            Evaluation currStateValue = minimax(currState, depth - 1, alpha, beta, true);
             if (currStateValue.compare(minEval) < 0) minEval = currStateValue;
+            if (beta.compare(currStateValue) < 0) beta = currStateValue;
+            if (beta.compare(alpha) <= 0) break;
         }
         return minEval;
     }
