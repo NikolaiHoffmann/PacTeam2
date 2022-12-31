@@ -1,10 +1,10 @@
 #include "Board.hpp"
 #include "PieceBoard.hpp"
-#include "/ghosts/Ghost.hpp"
-#include "/ghosts/RedGhost.hpp"
-#include "/ghosts/PinkGhost.hpp"
-#include "/ghosts/BlueGhost.hpp"
-#include "/ghosts/OrangeGhost.hpp"
+#include "ghosts/Ghost.hpp"
+#include "ghosts/RedGhost.hpp"
+#include "ghosts/PinkGhost.hpp"
+#include "ghosts/BlueGhost.hpp"
+#include "ghosts/OrangeGhost.hpp"
 #include <windows.h>
 #include <iostream>
 #include <fstream>
