@@ -25,7 +25,7 @@ Position OrangeGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
         int pacmanX = pacmanP.getX();
         int pacmanY = pacmanP.getY();
 
-        float distance = pow((pacmanX-ghostX)*(pacmanX-ghostX) + (pacmanY-ghostY)*(pacmanY-ghostY), 0.5f);
+        double distance = pow((pacmanX-ghostX)*(pacmanX-ghostX) + (pacmanY-ghostY)*(pacmanY-ghostY), 0.5f);
 
         if(distance <= 8)
         {

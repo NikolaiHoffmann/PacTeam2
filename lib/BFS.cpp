@@ -4,10 +4,12 @@
 int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
     PieceBoard* pb = board->getPieceBoard();
     Position startingPosition = board->getPacman()->getPosition();
-    bool visited[board->getHeight()][board->getWidth()]; //visited Positions array
+    int boardH = board->getHeight(), boardW = board->getWidth();
+    bool** visited = new bool* [boardH];
     //initialize visited array
-    for (int i = 0; i < board->getHeight(); i++) {
-        for (int j = 0; j < board->getWidth(); j++) {
+    for (int i = 0; i < boardH; i++) {
+        visited[i] = new bool[boardW];
+        for (int j = 0; j < boardW; j++) {
             visited[i][j] = false;
         }
     }
@@ -42,16 +44,29 @@ int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
             }
         }
     }
+    for (int h = 0; h < boardH; h++) {
+        delete[] visited[h];
+    }
+    delete[] visited;
     return -1; //couldnt find the given piece in the PieceBoard
 }
 
 std::vector<int> BFS::getNearestGhostsDistanceFromPacman(int nghosts, Board* board) {
     PieceBoard* pb = board->getPieceBoard();
+    int boardH = board->getHeight(), boardW = board->getWidth();
     Position startingPosition = board->getPacman()->getPosition();
-    bool visited[board->getHeight()][board->getWidth()]; //visited Positions array
+    bool** visited = new bool* [boardH];
+    //bool visited[board->getHeight()][board->getWidth()]; //visited Positions array
     //initialize visited array
-    for (int i = 0; i < board->getHeight(); i++) {
-        for (int j = 0; j < board->getWidth(); j++) {
+    for (int i = 0; i < boardH; i++) {
+        visited[i] = new bool[boardW];
+        for (int j = 0; j < boardW; j++) {
+            visited[i][j] = false;
+        }
+    }
+    //initialize visited array
+    for (int i = 0; i < boardH; i++) {
+        for (int j = 0; j < boardW; j++) {
             visited[i][j] = false;
         }
     }
@@ -92,5 +107,9 @@ std::vector<int> BFS::getNearestGhostsDistanceFromPacman(int nghosts, Board* boa
             }
         }
     }
+    for (int h = 0; h < boardH; h++) {
+        delete[] visited[h];
+    }
+    delete[] visited;
     return ret;
 }
