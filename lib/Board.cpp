@@ -36,7 +36,7 @@ Board::Board(string path) {
     ifstream map(path); //input file stream from path to the map text file
     if (!map) {
         //couldnt open file
-        cout << "file not found!" << endl;
+        cout << "File not found! File: " << path << endl;
     }
     string currentLine;
     getline(map, currentLine);
@@ -123,7 +123,7 @@ void Board::printBoard() {
         }
         cout << endl;
     }
-    cout << "Points" << points;
+    cout << "Points" << points << endl << endl;
     free(representation);
 }
 
