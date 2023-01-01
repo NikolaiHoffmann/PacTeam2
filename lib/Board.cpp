@@ -123,7 +123,7 @@ void Board::printBoard() {
         }
         cout << endl;
     }
-    cout << "Points" << points << endl << endl;
+    cout << "Points: " << points << endl << endl;
     free(representation);
 }
 
