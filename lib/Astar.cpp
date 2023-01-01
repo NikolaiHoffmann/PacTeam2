@@ -8,8 +8,8 @@
 */
 Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, Position endPosition, Position invalidPosition) {
     std::vector<Node*> open, closed;
-    open.reserve(100);
-    closed.reserve(100);
+    open.reserve(1000);
+    closed.reserve(1000);
     Node* currentNode = nullptr;
     int currentNodeIndex = 0;
 
@@ -89,7 +89,12 @@ Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, P
         positionList.insert(positionList.begin(), currentNode->pos);
         currentNode = currentNode->parent;
     }
-    return positionList[0].getDirection(positionList[1]);
+    if (positionList.size() < 2) {
+        //couldnt find path
+        return Direction::Null;
+    }
+    Direction ret = positionList[0].getDirection(positionList[1]);
+    return ret;
 }
 
 /*

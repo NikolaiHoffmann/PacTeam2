@@ -47,13 +47,17 @@ int PieceBoard::getIndex(Position position) {
     return position.getY() * width + position.getX();
 }
 
-char* PieceBoard::getRepresentation() {
-    char* representation = (char*)malloc(width * height * sizeof(char));
+std::string PieceBoard::getRepresentation() {
+    //char* representation = (char*)malloc(width * height * sizeof(char));
+    //std::string representation = std::string(width * height, ' ');
+    std::string representation;
+
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             int currentIndex = j * height + i;
             Piece piece = board[currentIndex];
-            representation[currentIndex] = pieceRepresentation[piece];
+            //representation[currentIndex] = pieceRepresentation[piece];
+            representation.push_back(pieceRepresentation[piece]);
         }
     }
     return representation;

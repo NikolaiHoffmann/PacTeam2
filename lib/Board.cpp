@@ -7,6 +7,7 @@
 #include "ghosts/OrangeGhost.hpp"
 #include <windows.h>
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <sstream>
 
@@ -100,7 +101,7 @@ Board::Board(string path) {
 }
 
 void Board::printBoard() {
-    char* representation = pieceBoard->getRepresentation();
+    std::string representation = pieceBoard->getRepresentation();
 
     //... set entities characters in representation 1d matrix
     Position playerPosition = player->getPosition ();
@@ -124,7 +125,6 @@ void Board::printBoard() {
         cout << endl;
     }
     cout << "Points: " << points << endl << endl;
-    free(representation);
 }
 
 /*
@@ -140,7 +140,7 @@ void Board::movePlayer() {
         if (pieceBoard->isBigFood(newPosition)) {
             for (int i = 0; i < 4; i++) {
                 if (ghosts[i] == nullptr) {
-                    std::cout << "nullptr" << std::endl;
+                    std::cout << "invalid ghost" << std::endl;
                 }
                 ghosts[i]->frighten();
             }

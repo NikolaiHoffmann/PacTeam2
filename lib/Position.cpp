@@ -1,5 +1,6 @@
 #include "Position.hpp"
 #include <cmath>
+#include <iostream>
 
 Position::Position(int x, int y) :
         x(x),

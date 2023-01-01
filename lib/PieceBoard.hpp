@@ -2,6 +2,7 @@
 #define PACTEAM2_PIECEBOARD_HPP
 
 #include "Position.hpp"
+#include <string>
 
 enum Piece { Wall = 0, Food, BigFood, Empty };
 
@@ -22,7 +23,7 @@ public:
     void setBigFood(Position pos);
     void setSmallFood(Position pos);
     void setEmpty(Position pos);
-    char* getRepresentation();
+    std::string getRepresentation();
     bool isPiece(Position pos, Piece p);
     bool isWall(Position position);
     bool isBigFood(Position pos);
