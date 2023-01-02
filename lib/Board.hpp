@@ -19,6 +19,7 @@ private:
     Position ghostsStartingPos[4];
     int points;
     int foodCount;
+    int currentGameTick;
     bool gameOver;
 public:
     Board(const Board& board);
@@ -43,6 +44,7 @@ public:
     void ghostEatPacman();
     void pacmanEatGhost(Ghost* g);
     bool isGameOver();
+    void increaseGameTick();
 };
 
 #endif //PACTEAM2_BOARD_HPP

@@ -9,7 +9,6 @@ private:
     PacmanAgent* pacmanAgent;
     Board* board;
     int ticksPerSecond;
-    int totalTicks;
     int ticksPerMovePlayer; //if the value is 1, it means the player moves every tick.
     int ticksPerMoveGhosts;
 public:

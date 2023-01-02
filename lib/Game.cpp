@@ -10,7 +10,6 @@ Game::Game(std::string mapPath, int tPS, int ticksPlayer, int ticksGhosts, Pacma
 {
     ticksPerMovePlayer = ticksPlayer;
     ticksPerMoveGhosts = ticksGhosts;
-    totalTicks = 0;
 }
 
 void Game::printBoard() {
@@ -18,16 +17,8 @@ void Game::printBoard() {
 }
 
 bool Game::update() {
-    if (totalTicks % ticksPerMovePlayer == 0) {
-        //time to update Player
-        //board->updatePlayer();
-        pacmanAgent->updateState(board);
-    }
-    if (totalTicks % ticksPerMoveGhosts == 0) {
-        //time to update Ghosts
-        board->updateGhosts();
-    }
-
-    totalTicks += 1;
+    pacmanAgent->updateState(board);
+    board->updateGhosts();
+    board->increaseGameTick();
     return !board->isGameOver();
 }

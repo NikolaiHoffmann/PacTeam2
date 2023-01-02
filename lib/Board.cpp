@@ -27,6 +27,7 @@ Board::Board(const Board& board) {
     pacmanStartingPos = board.pacmanStartingPos;
     gameOver = board.gameOver;
     foodCount = board.foodCount;
+    currentGameTick = board.currentGameTick;
     for (int i = 0; i < 4; i++) {
         Ghost* currGhost = board.ghosts[i];
         ghosts[i] = currGhost->clone();
@@ -36,6 +37,7 @@ Board::Board(const Board& board) {
 
 Board::Board(string path) {
     int currentGhostId = 0;
+    currentGameTick = 0;
     gameOver = false;
     foodCount = 0;
     ifstream map(path); //input file stream from path to the map text file
@@ -115,11 +117,18 @@ void Board::printBoard() {
 
     for (int j = 0; j < 4; j++)
     {
+        Ghost* ghost = ghosts[j];
         Position ghostPosition = ghosts[j]->getPosition();
-        if (j==0) {representation[pieceBoard->getIndex(ghostPosition)] = 'R';}
-        else if (j==1) {representation[pieceBoard->getIndex(ghostPosition)] = 'B';}
-        else if (j==2) {representation[pieceBoard->getIndex(ghostPosition)] = 'O';}
-        else if (j==3) {representation[pieceBoard->getIndex(ghostPosition)] = 'P';}
+        if (ghost->isFrightenedMode()) {
+            representation[pieceBoard->getIndex(ghostPosition)] = '?';
+        }
+        else {
+            if (j == 0) { representation[pieceBoard->getIndex(ghostPosition)] = 'R'; }
+            else if (j == 1) { representation[pieceBoard->getIndex(ghostPosition)] = 'B'; }
+            else if (j == 2) { representation[pieceBoard->getIndex(ghostPosition)] = 'O'; }
+            else if (j == 3) { representation[pieceBoard->getIndex(ghostPosition)] = 'P'; }
+        }
+        
     }
 
 
@@ -205,6 +214,10 @@ void Board::updateGhosts() {
 
     for (int ghostId = 0; ghostId < 4; ghostId++) {
         Ghost* ghost = ghosts[ghostId];
+        //in frightened mode, ghosts move every two game ticks (half speed)
+        //therefore, we check if the current ghost is in frightened mode,
+        //and if the currentGameTick is even. In this case we dont update the ghost
+        if (ghost->isFrightenedMode() && currentGameTick % 2 == 0) continue;
         Ghost* redGhost = ghosts[0];
         ghost->checkMode();
         Position ghostPos = ghost->getPosition();
@@ -370,4 +383,8 @@ void Board::pacmanEatGhost(Ghost* g) {
 
 bool Board::isGameOver() {
     return gameOver;
+}
+
+void Board::increaseGameTick() {
+    currentGameTick++;
 }
