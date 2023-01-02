@@ -24,6 +24,7 @@ private:
 public:
     Board(const Board& board);
     Board(std::string mapPath);
+    ~Board();
     void printBoard();
     void movePlayer();
     void moveGhost(int ghostId);

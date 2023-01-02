@@ -18,6 +18,7 @@ private:
 public:
     PieceBoard(const PieceBoard& pb);
     PieceBoard(int w, int h);
+    ~PieceBoard();
     int getIndex(Position position);
     void setWall(Position pos);
     void setBigFood(Position pos);

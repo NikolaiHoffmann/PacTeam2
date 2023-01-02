@@ -11,11 +11,6 @@
 #include <fstream>
 #include <sstream>
 
-#define KEY_UP 72
-#define KEY_DOWN 80
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
-
 using namespace std;
 
 Board::Board(const Board& board) {
@@ -106,6 +101,14 @@ Board::Board(string path) {
         }
     }
     pieceBoard->generateIntersectionBoard();
+}
+
+Board::~Board() {
+    delete[] pieceBoard;
+    delete[] player;
+    for (int i = 0; i < 4; i++) {
+        delete[] ghosts[i];
+    }
 }
 
 void Board::printBoard() {

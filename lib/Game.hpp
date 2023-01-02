@@ -13,6 +13,7 @@ private:
     int ticksPerMoveGhosts;
 public:
     Game(std::string mapPath, int tPS, int ticksPlayer, int ticksGhosts, PacmanAgent* _pacmanAgent);
+    ~Game();
     void printBoard();
     void movePlayer();
     bool update();

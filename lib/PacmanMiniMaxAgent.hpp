@@ -10,6 +10,7 @@ private:
     EvaluationFunction* ef;
 public:
     PacmanMiniMaxAgent(EvaluationFunction* _ef);
+    ~PacmanMiniMaxAgent();
     void updateState(Board* board);
     Evaluation minimax(Board* state, int depth, Evaluation alpha, Evaluation beta, bool maximizingPlayer);
 };

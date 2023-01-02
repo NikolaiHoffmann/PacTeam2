@@ -12,6 +12,11 @@ Game::Game(std::string mapPath, int tPS, int ticksPlayer, int ticksGhosts, Pacma
     ticksPerMoveGhosts = ticksGhosts;
 }
 
+Game::~Game() {
+    //delete[] board;
+    delete[] pacmanAgent;
+}
+
 void Game::printBoard() {
     board->printBoard();
 }

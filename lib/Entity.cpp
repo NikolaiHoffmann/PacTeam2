@@ -17,12 +17,8 @@ Entity::Entity(int nLives, int ticksPerMove, Position pos, Direction direction):
 {
 }
 
-Entity::Entity():
-        id(-1),
-        nLives(-1),
-        ticksPerMove(-1),
-        pos(Position(-1,-1))
-{
+Entity::~Entity() {
+
 }
 
 int Entity::getId() {

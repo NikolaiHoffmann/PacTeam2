@@ -6,6 +6,10 @@ PacmanMiniMaxAgent::PacmanMiniMaxAgent(EvaluationFunction* _ef) {
     ef = _ef;
 }
 
+//PacmanMiniMaxAgent::~PacmanMiniMaxAgent() {
+//    delete[] ef;
+//}
+
 void PacmanMiniMaxAgent::updateState(Board* board) {
     Evaluation alpha = Evaluation(-9999999);
     Evaluation beta = Evaluation(9999999);
@@ -22,6 +26,10 @@ void PacmanMiniMaxAgent::updateState(Board* board) {
             bestState = currState;
         }
     }
+    //for (it = possibleStates.begin(); it != possibleStates.end(); ++it) {
+    //    Board* currState = *it;
+    //    delete[] currState;
+    //}
 
     //at this point, bestState contains the best possible next state for pacman
 

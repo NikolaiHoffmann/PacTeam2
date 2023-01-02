@@ -16,7 +16,14 @@ PieceBoard::PieceBoard(const PieceBoard& pb) : pieceRepresentation{ '#', '.', 'o
 PieceBoard::PieceBoard(int w, int h) : pieceRepresentation{ '#', '.', 'o', ' ' } {
     width = w;
     height = h;
-    board = (Piece*)malloc(width * height * sizeof(Piece)); //we malloc the array with required space
+    //board = (Piece*)malloc(width * height * sizeof(Piece)); //we malloc the array with required space
+    board = new Piece[width * height];
+    intersectionBoard = nullptr;
+}
+
+PieceBoard::~PieceBoard() {
+    delete[] board;
+    if (intersectionBoard != nullptr) delete[] intersectionBoard;
 }
 
 void PieceBoard::setPiece(Position pos, Piece piece) {
@@ -90,7 +97,8 @@ bool PieceBoard::isInvalid(Position position) {
 }
 
 void PieceBoard::generateIntersectionBoard() {
-    intersectionBoard = (bool*)malloc(width * height * sizeof(bool));
+    //intersectionBoard = (bool*)malloc(width * height * sizeof(bool));
+    intersectionBoard = new bool[width * height];
     int currentIndex = 0;
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {

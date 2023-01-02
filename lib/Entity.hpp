@@ -14,7 +14,7 @@ private:
 public:
     Entity(const Entity& ent);
     Entity(int nLives, int ticksPerMove, Position pos, Direction direction);
-    Entity();
+    ~Entity();
     int getId();
     Direction getDirection();
     Position getPosition();
