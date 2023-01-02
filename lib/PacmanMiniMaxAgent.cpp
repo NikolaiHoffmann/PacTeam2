@@ -33,7 +33,7 @@ void PacmanMiniMaxAgent::updateState(Board* board) {
 }
 
 Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, Evaluation alpha, Evaluation beta, bool maximizingPlayer) {
-    if (depth == 0) {
+    if (depth == 0 || state->isGameOver()) {
         return ef->evaluate(state);
     }
 

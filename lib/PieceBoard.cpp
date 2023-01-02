@@ -78,6 +78,11 @@ bool PieceBoard::isBigFood(Position position) {
     return board[index] == BigFood;
 }
 
+bool PieceBoard::isAnyFood(Position position) {
+    int index = getIndex(position);
+    return board[index] == BigFood || board[index] == Food;
+}
+
 bool PieceBoard::isInvalid(Position position) {
     int x = position.getX();
     int y = position.getY();

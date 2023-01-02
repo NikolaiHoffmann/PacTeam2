@@ -33,7 +33,8 @@ Direction Ghost::getNextDirection(PieceBoard* pb, Entity* pacman, Ghost* redGhos
     else {
         Position previousPosition = getPosition().translate(opposite(currentDirection));
         Position endPosition = getTargetPosition(pacman, redGhost);
-        return Astar::getOptimalDirection(pb, getPosition(), endPosition, previousPosition);
+        Direction optimal = Astar::getOptimalDirection(pb, getPosition(), endPosition, previousPosition);
+        return optimal;
     }
 
 }
@@ -103,4 +104,8 @@ void Ghost::reverseDirection() {
 
 Ghost* Ghost::clone() {
     return nullptr;
+}
+
+int Ghost::getGhostId() {
+    return ghostId;
 }

@@ -33,6 +33,7 @@ public:
     bool isScatterMode();
     void reverseDirection();
     virtual Ghost* clone(); //maybe needs change
+    int getGhostId();
 protected:
     Position scatterTarget;
 };

@@ -18,6 +18,8 @@ private:
     Ghost* ghosts[4];
     Position ghostsStartingPos[4];
     int points;
+    int foodCount;
+    bool gameOver;
 public:
     Board(const Board& board);
     Board(std::string mapPath);
@@ -37,8 +39,10 @@ public:
     int getWidth();
     int getHeight();
     int getPoints();
-    bool collisionGhosts(Position pos);
+    Ghost* collisionGhosts(Position pos);
     void ghostEatPacman();
+    void pacmanEatGhost(Ghost* g);
+    bool isGameOver();
 };
 
 #endif //PACTEAM2_BOARD_HPP

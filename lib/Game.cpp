@@ -17,7 +17,7 @@ void Game::printBoard() {
     board->printBoard();
 }
 
-void Game::update() {
+bool Game::update() {
     if (totalTicks % ticksPerMovePlayer == 0) {
         //time to update Player
         //board->updatePlayer();
@@ -29,4 +29,5 @@ void Game::update() {
     }
 
     totalTicks += 1;
+    return !board->isGameOver();
 }

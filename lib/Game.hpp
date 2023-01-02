@@ -16,7 +16,7 @@ public:
     Game(std::string mapPath, int tPS, int ticksPlayer, int ticksGhosts, PacmanAgent* _pacmanAgent);
     void printBoard();
     void movePlayer();
-    void update();
+    bool update();
 };
 
 #endif //PACTEAM2_GAME_HPP

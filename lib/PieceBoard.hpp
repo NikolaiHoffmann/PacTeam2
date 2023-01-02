@@ -27,6 +27,7 @@ public:
     bool isPiece(Position pos, Piece p);
     bool isWall(Position position);
     bool isBigFood(Position pos);
+    bool isAnyFood(Position position);
     bool isInvalid(Position position);
     void generateIntersectionBoard();
     bool isIntersection(Position pos);
