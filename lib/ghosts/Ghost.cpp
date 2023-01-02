@@ -1,6 +1,7 @@
 #include "Ghost.hpp"
 #include "../Astar.hpp"
 #include <iostream>
+#include <stdlib.h> //srand, rand
 
 Ghost::Ghost(const Ghost& gh) : Entity(gh) {
     ghostId = gh.ghostId;
@@ -28,7 +29,8 @@ Direction Ghost::getNextDirection(PieceBoard* pb, Entity* pacman, Ghost* redGhos
     Direction currentDirection = getDirection();
     if (mode == Mode::Frightened) {
         //return a random possible direction!
-        return Direction::Up;
+        Direction d = (Direction) (rand() % 4);
+        return d;
     }
     else {
         Position previousPosition = getPosition().translate(opposite(currentDirection));

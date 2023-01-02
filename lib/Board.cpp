@@ -150,6 +150,8 @@ void Board::movePlayer() {
     Direction currentDirection = player->getDirection();
     Position currentPosition = player->getPosition();
     Position newPosition = currentPosition.translate(currentDirection);
+
+    points--; //time penalty so that agents prioritize ending the game quicker
     if (!pieceBoard->isWall(newPosition)) {
         if (pieceBoard->isAnyFood(newPosition)) {
             if (foodCount == 1) {

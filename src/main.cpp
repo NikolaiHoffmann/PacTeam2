@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <stdlib.h> // srand, rand
 #include "lib/Game.hpp"
 #include "lib/PacmanKeyBoardAgent.hpp"
 #include "lib/PacmanMiniMaxAgent.hpp"
@@ -10,6 +11,7 @@ int main() {
     using namespace std::this_thread; // sleep_for, sleep_until
     using namespace std::chrono; // nanoseconds, system_clock, seconds
     int ticksPerSecond = 5;
+    srand(time(NULL));
     milliseconds timeout((int)((1.0 / ticksPerSecond) * 1000));
     //Game game = Game("maps/0.txt", ticksPerSecond, 1, 2,
     //	new PacmanMiniMaxAgent(new EvaluationFunction()));
