@@ -13,8 +13,8 @@ Game::Game(std::string mapPath, int tPS, int ticksPlayer, int ticksGhosts, Pacma
 }
 
 Game::~Game() {
-    //delete[] board;
-    delete[] pacmanAgent;
+    delete board;
+    delete pacmanAgent;
 }
 
 void Game::printBoard() {

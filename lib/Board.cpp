@@ -104,10 +104,10 @@ Board::Board(string path) {
 }
 
 Board::~Board() {
-    delete[] pieceBoard;
-    delete[] player;
+    delete pieceBoard;
+    delete player;
     for (int i = 0; i < 4; i++) {
-        delete[] ghosts[i];
+        delete ghosts[i];
     }
 }
 

@@ -6,7 +6,7 @@ PieceBoard::PieceBoard(const PieceBoard& pb) : pieceRepresentation{ '#', '.', 'o
     width = pb.width;
     height = pb.height;
     int size = width * height;
-    board = (Piece*)malloc(size * sizeof(Piece));
+    board = new Piece[size];
     for (int i = 0; i < size; i++) {
         board[i] = pb.board[i];
     }

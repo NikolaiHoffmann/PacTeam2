@@ -13,13 +13,12 @@ int main() {
     int ticksPerSecond = 5;
     srand(time(NULL));
     milliseconds timeout((int)((1.0 / ticksPerSecond) * 1000));
-    //Game game = Game("maps/0.txt", ticksPerSecond, 1, 2,
-    //	new PacmanMiniMaxAgent(new EvaluationFunction()));
     Game game = Game("../maps/map0.txt", ticksPerSecond, 1, 1, new PacmanMiniMaxAgent(new EvaluationFunction()));
     /*
     Current solution only works for windows! (the GetAsyncKeyState function)
     We should find an alternative to work on linux too.
     */
+
     game.printBoard();
     sleep_for(timeout); //sleep interval
     while (game.update()) {

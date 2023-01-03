@@ -19,6 +19,8 @@ Ghost::Ghost(int gId, int ticksPerMove, Position pos, Direction direction, Posit
     lastScatterTime = lastChaseTime = lastFrightenedTime = std::chrono::system_clock::now();
 }
 
+Ghost::~Ghost() {}
+
 /*
 * Receives the current state of the pieceBoard, and returns the next move
 * for the ghost

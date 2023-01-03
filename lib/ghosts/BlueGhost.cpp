@@ -10,6 +10,8 @@ BlueGhost::BlueGhost(int gId, int ticksPerMove, Position position, Direction dir
 {
 }
 
+//BlueGhost::~Ghost() {}
+
 Position BlueGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
 {
     if (isChaseMode())

@@ -6,9 +6,9 @@ PacmanMiniMaxAgent::PacmanMiniMaxAgent(EvaluationFunction* _ef) {
     ef = _ef;
 }
 
-//PacmanMiniMaxAgent::~PacmanMiniMaxAgent() {
-//    delete[] ef;
-//}
+PacmanMiniMaxAgent::~PacmanMiniMaxAgent() {
+    delete ef;
+}
 
 void PacmanMiniMaxAgent::updateState(Board* board) {
     Evaluation alpha = Evaluation(-9999999);
@@ -38,6 +38,10 @@ void PacmanMiniMaxAgent::updateState(Board* board) {
     Direction directionToTake = currPos.direction(newPos);
     board->changePlayerDirection(directionToTake);
     board->movePlayer();
+    for (it = possibleStates.begin(); it != possibleStates.end(); ++it) {
+        Board* currState = *it;
+        delete currState;
+    }
 }
 
 Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, Evaluation alpha, Evaluation beta, bool maximizingPlayer) {
@@ -57,6 +61,10 @@ Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, Evaluation alpha
             if (alpha.compare(currStateValue) > 0) alpha = currStateValue;
             if (beta.compare(alpha) <= 0) break;
         }
+        for (it = possibleStates.begin(); it != possibleStates.end(); ++it) {
+            Board* currState = *it;
+            delete currState;
+        }
         return maxEval;
     }
     else {
@@ -70,6 +78,10 @@ Evaluation PacmanMiniMaxAgent::minimax(Board* state, int depth, Evaluation alpha
             if (currStateValue.compare(minEval) < 0) minEval = currStateValue;
             if (beta.compare(currStateValue) < 0) beta = currStateValue;
             if (beta.compare(alpha) <= 0) break;
+        }
+        for (it = possibleStates.begin(); it != possibleStates.end(); ++it) {
+            Board* currState = *it;
+            delete currState;
         }
         return minEval;
     }

@@ -5,8 +5,8 @@
 #include "../PieceBoard.hpp"
 #include <chrono>
 
-#define FRIGHTENED_DURATION 3.0
-#define SCATTER_DURATION 7.0
+#define FRIGHTENED_DURATION 5.0
+#define SCATTER_DURATION 5.0
 #define CHASE_DURATION 20.0
 
 enum Mode {Chase, Scatter, Frightened};
@@ -24,6 +24,7 @@ private:
 public:
     Ghost(const Ghost& gh);
     Ghost(int gId, int ticksPerMove, Position pos, Direction direction, Position scatter);
+    virtual ~Ghost() = 0;
     Direction getNextDirection(PieceBoard* pb, Entity* pacman, Ghost* redGhost);
     virtual Position getTargetPosition(Entity* pacman, Ghost* redGhost) = 0;
     void checkMode();
