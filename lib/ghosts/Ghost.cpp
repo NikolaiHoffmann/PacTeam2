@@ -43,8 +43,12 @@ Direction Ghost::getNextDirection(PieceBoard* pb, Entity* pacman, Ghost* redGhos
 
 }
 
+/*
+* This function updates the mode of this ghost, if it is time to change his mode
+*/
 void Ghost::checkMode() {
     auto current_timer = std::chrono::system_clock::now();
+    //when the ghost changes from chase to scatter, the direction is reversed
     if (mode == Mode::Chase) {
         std::chrono::duration<double> elapsed_seconds = current_timer - lastChaseTime;
         if (elapsed_seconds.count() >= CHASE_DURATION) {
@@ -69,14 +73,12 @@ void Ghost::checkMode() {
             if (lastChaseTime > lastScatterTime) {
                 mode = Mode::Chase;
 
-                //this isnt very efficient
                 lastChaseTime +=
                         std::chrono::duration_cast<std::chrono::system_clock::duration>(std::chrono::duration<double>(FRIGHTENED_DURATION));
             }
             else {
                 mode = Mode::Scatter;
 
-                //this isnt very efficient
                 lastScatterTime +=
                         std::chrono::duration_cast<std::chrono::system_clock::duration>(std::chrono::duration<double>(FRIGHTENED_DURATION));
             }

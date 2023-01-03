@@ -1,6 +1,9 @@
 #include "Entity.hpp"
 #include <iostream>
 
+/*
+* Entity clone constructor
+*/
 Entity::Entity(const Entity& ent) {
     id = ent.id;
     nLives = ent.nLives;
@@ -18,7 +21,6 @@ Entity::Entity(int nLives, int ticksPerMove, Position pos, Direction direction):
 }
 
 Entity::~Entity() {
-
 }
 
 int Entity::getId() {
@@ -45,64 +47,61 @@ void Entity::print() {
     std::cout << id << "," << nLives << ",(" << pos.getX() << "," << pos.getY() << ")" << std::endl;
 }
 
-
+/*
+* Returns the position of the pink ghost's target when it is in chase mode
+*/
 Position Entity::getPinkTarget()
 {
     int newx = pos.getX(), newy = pos.getY();
     Position newpos;
-    if(direction == 0)
-    {
+    switch (direction) {
+    case (Up):
         newy = newy - 4;
-        newpos = Position(newx,newy);
-    }
-    else if(direction == 1)
-    {
+        break;
+    case (Down):
         newy = newy + 4;
-        newpos = Position(newx,newy);
-    }
-    else if(direction == 2)
-    {
+        break;
+    case (Right):
         newx = newx + 4;
-        newpos = Position(newx,newy);
-    }
-    else if(direction == 3)
-    {
+        break;
+    case (Left):
         newx = newx - 4;
-        newpos = Position(newx,newy);
+        break;
+    case (Null):
+        break;
     }
+    
+    newpos = Position(newx, newy);
 
     return newpos;
 }
 
+/*
+* Returns the position of the orange ghost's target when it is in chase mode
+*/
 Position Entity::getOrangeTarget()
 {
     int newx = pos.getX(), newy = pos.getY();
-    Position newpos;
-    if(direction == 0)
-    {
+    switch (direction) {
+    case (Up):
         newy = newy - 2;
-        newpos = Position(newx,newy);
-    }
-    else if(direction == 1)
-    {
+        break;
+    case (Down):
         newy = newy + 2;
-        newpos = Position(newx,newy);
-    }
-    else if(direction == 2)
-    {
+        break;
+    case (Right):
         newx = newx + 2;
-        newpos = Position(newx,newy);
-    }
-    else if(direction == 3)
-    {
+        break;
+    case (Left):
         newx = newx - 2;
-        newpos = Position(newx,newy);
+        break;
+    case (Null):
+        break;
     }
+    Position newpos = Position(newx, newy);
 
     return newpos;
 }
-
-
 
 Entity* Entity::clone() {
     return new Entity(*this);

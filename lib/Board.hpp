@@ -12,15 +12,22 @@ class Board {
 private:
     int width;
     int height;
+    //pieceBoard stores all the pieces inside our board
     PieceBoard* pieceBoard;
+    //pacman entity
     Entity* player;
+    //initial position of pacman
     Position pacmanStartingPos;
+    //array with the 4 ghosts
     Ghost* ghosts[4];
+    //initial positions of the ghosts
     Position ghostsStartingPos[4];
     int points;
+    //we havefoodCount variable to know when pacman has eaten all the foods.
     int foodCount;
     int currentGameTick;
     bool gameOver;
+    int pacmanDeaths;
 public:
     Board(const Board& board);
     Board(std::string mapPath);
@@ -31,8 +38,7 @@ public:
     void changePlayerDirection(Direction newDirection);
     void changeGhostDirection(int ghostId, Direction newDirection);
     void updateGhosts();
-    void moveCurveTunnel(Entity* ghost);
-    void setCurveDirection(Entity* ghost);
+    void setCurveDirection(Ghost* ghost);
     Board* clone();
     std::vector<Board*> getPacmanChildStates();
     std::vector<Board*> getGhostsChildStates();

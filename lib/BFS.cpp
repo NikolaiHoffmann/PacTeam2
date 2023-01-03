@@ -1,6 +1,9 @@
 #include "BFS.hpp"
 #include <queue>
 
+/*
+* Returns the distance from pacman to the nearest piece given as argument
+*/
 int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
     PieceBoard* pb = board->getPieceBoard();
     Position startingPosition = board->getPacman()->getPosition();
@@ -27,11 +30,16 @@ int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
         Position pos = node.first;
         int depth = node.second;
 
+        //the current node is the requested piece, so we return the depth (distance from the
+        // initial node to the current node.
         if (pb->isPiece(pos, p)) return depth;
 
+        //remove analysed node from the queue
         nodeQueue.pop();
 
         //iterate every direction
+        //for every direction, if the position adjacent to the current isn't a wall,
+        // we add it to the queue so as to analyse it later.
         for (int i = 0; i < 4; i++) {
             Direction currentDirection = (Direction)i;
             Position newPos = pos.translate(currentDirection);
@@ -44,6 +52,7 @@ int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
             }
         }
     }
+    // we free the nodes of the visited matrix
     for (int h = 0; h < boardH; h++) {
         delete[] visited[h];
     }
@@ -51,21 +60,18 @@ int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
     return -1; //couldnt find the given piece in the PieceBoard
 }
 
+/*
+* Given the number of ghosts to get the distance from pacman, we return a vector with
+* the corresponding distances
+*/
 std::vector<int> BFS::getNearestGhostsDistanceFromPacman(int nghosts, Board* board) {
     PieceBoard* pb = board->getPieceBoard();
     int boardH = board->getHeight(), boardW = board->getWidth();
     Position startingPosition = board->getPacman()->getPosition();
     bool** visited = new bool* [boardH];
-    //bool visited[board->getHeight()][board->getWidth()]; //visited Positions array
     //initialize visited array
     for (int i = 0; i < boardH; i++) {
         visited[i] = new bool[boardW];
-        for (int j = 0; j < boardW; j++) {
-            visited[i][j] = false;
-        }
-    }
-    //initialize visited array
-    for (int i = 0; i < boardH; i++) {
         for (int j = 0; j < boardW; j++) {
             visited[i][j] = false;
         }
@@ -88,6 +94,8 @@ std::vector<int> BFS::getNearestGhostsDistanceFromPacman(int nghosts, Board* boa
         int depth = node.second;
 
         if (board->collisionGhosts(pos)) {
+            //this node collides with a ghost, so we return the distance from the origin
+            // to this ghost, and we increase the count of ghosts found
             ret.push_back(depth);
             ghostsFound++;
             if (ghostsFound == nghosts) return ret;

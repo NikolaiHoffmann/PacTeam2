@@ -9,6 +9,11 @@ RedGhost::RedGhost(int gId, int ticksPerMove, Position position, Direction direc
 {
 }
 
+/*
+* Returns the target position of the red ghost, whether it is in chase
+* mode, or in scatter mode.
+* In chase mode, the red ghost's target tile is pacman's position.
+*/
 Position RedGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
 {
     if (isChaseMode())

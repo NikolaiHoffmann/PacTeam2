@@ -2,7 +2,6 @@
 #include <math.h>
 
 BlueGhost::BlueGhost(const BlueGhost& g) : Ghost(g) {
-
 }
 
 BlueGhost::BlueGhost(int gId, int ticksPerMove, Position position, Direction direction, int width)
@@ -10,8 +9,10 @@ BlueGhost::BlueGhost(int gId, int ticksPerMove, Position position, Direction dir
 {
 }
 
-//BlueGhost::~Ghost() {}
-
+/*
+* Returns the target position of the blue ghost, whether it is in chase
+* mode, or in scatter mode.
+*/
 Position BlueGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
 {
     if (isChaseMode())

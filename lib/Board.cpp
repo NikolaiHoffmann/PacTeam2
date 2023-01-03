@@ -13,6 +13,9 @@
 
 using namespace std;
 
+/*
+* Board clone constructor
+*/
 Board::Board(const Board& board) {
     width = board.width;
     height = board.height;
@@ -23,6 +26,7 @@ Board::Board(const Board& board) {
     gameOver = board.gameOver;
     foodCount = board.foodCount;
     currentGameTick = board.currentGameTick;
+    pacmanDeaths = board.pacmanDeaths;
     for (int i = 0; i < 4; i++) {
         Ghost* currGhost = board.ghosts[i];
         ghosts[i] = currGhost->clone();
@@ -30,11 +34,15 @@ Board::Board(const Board& board) {
     }
 }
 
+/*
+* Creates a Board object, given the path to the map
+*/
 Board::Board(string path) {
     int currentGhostId = 0;
     currentGameTick = 0;
     gameOver = false;
-    foodCount = 0;
+    pacmanDeaths = 0;
+    foodCount = 0; //initially, 0 foods have been read
     ifstream map(path); //input file stream from path to the map text file
     if (!map) {
         //couldnt open file
@@ -53,56 +61,67 @@ Board::Board(string path) {
     for (int j = 0; j < height; j++) {
         getline(map, currentLine);
         for (int i = 0; i < width; i++) {
+            //for each character in the map file, we are going to analyse it
             Position position = Position(i, j);
             if (currentLine[i] == '#') {
+                //we set the corresponding position in pieceBoard object as a wall
                 pieceBoard->setWall(position);
             } else if (currentLine[i] == 'o') {
+                //we set the corresponding position in pieceBoard object as a big food
                 foodCount++;
                 pieceBoard->setBigFood(position);
             } else if (currentLine[i] == '.') {
+                //we set the corresponding position in pieceBoard object as a small food
                 foodCount++;
                 pieceBoard->setSmallFood(position);
             } else if (currentLine[i] == ' ') {
+                //we set the corresponding position in pieceBoard object as empty
                 pieceBoard->setEmpty(position);
             } else if (currentLine[i] == 'R') {
-                //board[currentIndex] = Piece::Ghost1;
+                //we set the red ghost
                 pieceBoard->setEmpty(position);
                 Ghost* ghost = new RedGhost(currentGhostId, 2, Position(i, j), Direction::Right, width);
                 ghosts[currentGhostId] = ghost;
                 ghostsStartingPos[currentGhostId] = ghost->getPosition();
                 currentGhostId++;
             } else if (currentLine[i] == 'P') {
-                //board[currentIndex] = Piece::Ghost2;
+                //we set the pink ghost
                 pieceBoard->setEmpty(position);
                 Ghost* ghost = new PinkGhost(currentGhostId, 2, Position(i, j), Direction::Right);
                 ghosts[currentGhostId] = ghost;
                 ghostsStartingPos[currentGhostId] = ghost->getPosition();
                 currentGhostId++;
             } else if (currentLine[i] == 'B') {
-                //board[currentIndex] = Piece::Ghost3;
+                //we set the blue ghost
                 pieceBoard->setEmpty(position);
                 Ghost* ghost = new BlueGhost(currentGhostId, 2, Position(i, j), Direction::Right, width);
                 ghosts[currentGhostId] = ghost;
                 ghostsStartingPos[currentGhostId] = ghost->getPosition();
                 currentGhostId++;
             } else if (currentLine[i] == 'O') {
-                //board[currentIndex] = Piece::Ghost4;
+                //we set the orange ghost
                 pieceBoard->setEmpty(position);
                 Ghost* ghost = new OrangeGhost(currentGhostId, 2, Position(i, j), Direction::Right, width);
                 ghosts[currentGhostId] = ghost;
                 ghostsStartingPos[currentGhostId] = ghost->getPosition();
                 currentGhostId++;
             } else if (currentLine[i] == '{') {
-                //board[currentIndex] = Piece::Player;
+                //we set the pacman
                 pieceBoard->setEmpty(position);
                 player = new Entity(3, 1, Position(i, j), Direction::Right);
                 pacmanStartingPos = player->getPosition();
             }
         }
     }
+    //we generate the intersection board
+    //intersection board contains information on whether each position is
+    // a tunnel or an intersection. this is important for ghosts movement
     pieceBoard->generateIntersectionBoard();
 }
 
+/*
+* Board destructor
+*/
 Board::~Board() {
     delete pieceBoard;
     delete player;
@@ -114,15 +133,17 @@ Board::~Board() {
 void Board::printBoard() {
     std::string representation = pieceBoard->getRepresentation();
 
-    //... set entities characters in representation 1d matrix
     Position playerPosition = player->getPosition ();
-    representation[pieceBoard->getIndex(playerPosition)] = '{'; //change this later
+    //we set pacman representation as character 'X'
+    representation[pieceBoard->getIndex(playerPosition)] = 'X';
 
     for (int j = 0; j < 4; j++)
     {
         Ghost* ghost = ghosts[j];
         Position ghostPosition = ghosts[j]->getPosition();
         if (ghost->isFrightenedMode()) {
+            //if the ghost is in frightened mode, it is represented
+            // as the character '?'
             representation[pieceBoard->getIndex(ghostPosition)] = '?';
         }
         else {
@@ -134,7 +155,7 @@ void Board::printBoard() {
         
     }
 
-
+    //print out the representation
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             int currentIndex = j * height + i;
@@ -142,6 +163,7 @@ void Board::printBoard() {
         }
         cout << endl;
     }
+    cout << "Deaths: " << pacmanDeaths << endl;
     cout << "Points: " << points << endl << endl;
 }
 
@@ -158,11 +180,16 @@ void Board::movePlayer() {
     if (!pieceBoard->isWall(newPosition)) {
         if (pieceBoard->isAnyFood(newPosition)) {
             if (foodCount == 1) {
+                //in this case, pacman eats the last food, and the game ends
+                //we add 5000 points so that the agent always go for this state, if it
+                // is in range
                 gameOver = true;
                 points += 5000;
             }
 
             if (pieceBoard->isBigFood(newPosition)) {
+                //if it is a big food, we set all the ghost's modes to Frightened.
+                // and we increase points by a lot
                 for (int i = 0; i < 4; i++) {
                     if (ghosts[i] == nullptr) {
                         std::cout << "invalid ghost" << std::endl;
@@ -174,9 +201,12 @@ void Board::movePlayer() {
             foodCount--;
         }
         
+        //set pacman's position to the new position
         player->setPosition(newPosition);
         Ghost* g;
         if (g = collisionGhosts(newPosition)) {
+            //if there is a collision and the ghost is not frightened, the ghost eats pacman
+            //otherwise pacman eats ghost
             if (g->isFrightenedMode()) pacmanEatGhost(g);
             else ghostEatPacman();
         }
@@ -193,14 +223,20 @@ void Board::moveGhost(int ghostId) {
     Position currentPosition = ghost->getPosition();
     Position newPosition = currentPosition.translate(currentDirection);
     if (!pieceBoard->isWall(newPosition)) {
+        //if next position isnt a wall, update ghost position to this next position
         ghost->setPosition(newPosition);
         if (newPosition.equals(player->getPosition())) {
+            //if there is a collision and the ghost is not frightened, the ghost eats pacman
+            //otherwise pacman eats ghost
             if (ghost->isFrightenedMode()) pacmanEatGhost(ghost);
             else ghostEatPacman();
         }
     }
 }
 
+/*
+* Change the player's direction to the given direction
+*/
 void Board::changePlayerDirection(Direction newDirection) {
     Position nextPosition = player->getPosition().translate(newDirection);
     if (!pieceBoard->isWall(nextPosition)) {
@@ -208,6 +244,9 @@ void Board::changePlayerDirection(Direction newDirection) {
     }
 }
 
+/*
+* Change the given ghost's direction to the given direction
+*/
 void Board::changeGhostDirection(int ghostId, Direction newDirection) {
     ghosts[ghostId]->setDirection(newDirection);
 }
@@ -224,17 +263,15 @@ void Board::updateGhosts() {
         //and if the currentGameTick is even. In this case we dont update the ghost
         if (ghost->isFrightenedMode() && currentGameTick % 2 == 0) continue;
         Ghost* redGhost = ghosts[0];
+        //we update the ghost's mode
         ghost->checkMode();
         Position ghostPos = ghost->getPosition();
-        /*
-        * Whatever the case is, the ghost can't go to the square
-        * it was just in
-        */
         if (pieceBoard->isIntersection(ghostPos)) {
             /*
             * ghost is in an intersection
             * intersections have 3 or more surrounding squares
             */
+            //we get the next direction of this ghost
             Direction newDirection = ghost->getNextDirection(pieceBoard, player, redGhost);
             ghost->setDirection(newDirection);
         } else if (pieceBoard->isDeadEnd(ghostPos)) {
@@ -246,6 +283,7 @@ void Board::updateGhosts() {
             Direction currentDirection = ghost->getDirection();
             Position forwardPos = ghostPos.translate(currentDirection);
             if (!pieceBoard->isWall(forwardPos)) {
+                //if the next position isnt a wall, we dont change the direction
             }
             else if (pieceBoard->isDeadEnd(ghostPos)) {
                 /*
@@ -266,6 +304,7 @@ void Board::updateGhosts() {
             */
             
         }
+        //we move the ghost in the current direction (direction was updates above)
         moveGhost(ghostId);
     }
 }
@@ -275,7 +314,7 @@ void Board::updateGhosts() {
 * sets the direction of the entity to the direction that doesn't have a wall, in order
 * for the entity to keep moving
 */
-void Board::setCurveDirection(Entity* ghost) {
+void Board::setCurveDirection(Ghost* ghost) {
     //Assuming we are in a curve tunnel, this function gets as input the entity that is in a
     // type 2 tunnel, and retrieves the
     Position currentPosition = ghost->getPosition();
@@ -296,7 +335,6 @@ void Board::setCurveDirection(Entity* ghost) {
     }
 
     Position pos1 = currentPosition.translate(adjacent1);
-    //Position pos2 = currentPosition.translate(adjacent2);
     if (pieceBoard->isWall(pos1)) ghost->setDirection(adjacent2);
     else ghost->setDirection(adjacent1);
 }
@@ -321,8 +359,11 @@ std::vector<Board*> Board::getPacmanChildStates() {
         }
     }
     //at this point, possibleDirections contains all possible directions to move
+    //directions in which the next position isnt a wall
     std::vector<Direction>::iterator it = possibleDirections.begin();
     for (; it != possibleDirections.end(); ++it) {
+        //for each possible direction, we clone the current state,
+        //and we move the pacman in the cloned state to the current direction.
         Direction currentDirection = *it;
         Board* newState = this->clone();
         newState->changePlayerDirection(currentDirection);
@@ -365,6 +406,10 @@ int Board::getPoints() {
     return points;
 }
 
+/*
+* Returns a ghost if pacman is in the same position as him.
+* Otherwise returns the null pointer.
+*/
 Ghost* Board::collisionGhosts(Position pos) {
     for (int i = 0; i < 4; i++) {
         Position posGhost = ghosts[i]->getPosition();
@@ -373,7 +418,13 @@ Ghost* Board::collisionGhosts(Position pos) {
     return nullptr;
 }
 
+/*
+* Ghost eats Pacman. In this case we increase death count, we decrease the points,
+* and we reset pacman's position to the initial position
+* We also reset the ghosts' positions
+*/
 void Board::ghostEatPacman() {
+    pacmanDeaths += 1;
     points -= 500;
     player->setPosition(pacmanStartingPos);
     for (int i = 0; i < 4; i++) {
@@ -381,6 +432,10 @@ void Board::ghostEatPacman() {
     }
 }
 
+/*
+* Pacman eats a Ghost. In this case we increase the points and we set the ghost's position
+* to his starting position
+*/
 void Board::pacmanEatGhost(Ghost* g) {
     points += 500;
     g->setPosition(ghostsStartingPos[g->getGhostId()]);

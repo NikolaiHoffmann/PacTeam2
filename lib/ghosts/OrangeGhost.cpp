@@ -14,6 +14,13 @@ Ghost* OrangeGhost::clone(){
     return new OrangeGhost(*this);
 }
 
+/*
+* Returns the target position of the orange ghost, whether it is in chase
+* mode, or in scatter mode.
+* If the orange ghost is further than eight tiles from pacman, its target
+* is the pacman's position. Otherwise, it is the scatter position (edge
+* of the map).
+*/
 Position OrangeGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
 {
     if (isChaseMode())

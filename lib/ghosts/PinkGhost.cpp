@@ -9,6 +9,10 @@ PinkGhost::PinkGhost(int gId, int ticksPerMove, Position position, Direction dir
 {
 }
 
+/*
+* Returns the target position of the pink ghost, whether it is in chase
+* mode, or in scatter mode.
+*/
 Position PinkGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
 {
     if (isChaseMode())
