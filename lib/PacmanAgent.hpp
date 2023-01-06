@@ -6,6 +6,7 @@
 class PacmanAgent {
 public:
     virtual void updateState(Board* board) = 0;
+    virtual ~PacmanAgent();
 };
 
 #endif //PACTEAM2_PACMANAGENT_HPP
