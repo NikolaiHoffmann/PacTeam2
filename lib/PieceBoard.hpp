@@ -11,7 +11,7 @@ private:
     int width;
     int height;
     Piece* board; //matrix of Pieces
-    bool* intersectionBoard;
+    bool* intersectionBoard{};
     char pieceRepresentation[4];
     Piece getPiece(Position pos);
     void setPiece(Position pos, Piece piece);
@@ -19,7 +19,7 @@ public:
     PieceBoard(const PieceBoard& pb);
     PieceBoard(int w, int h);
     ~PieceBoard();
-    int getIndex(Position position);
+    [[nodiscard]] int getIndex(Position position) const;
     void setWall(Position pos);
     void setBigFood(Position pos);
     void setSmallFood(Position pos);

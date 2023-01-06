@@ -1,5 +1,3 @@
 #include "PacmanAgent.hpp"
 
-PacmanAgent::~PacmanAgent() {
-
-}
+PacmanAgent::~PacmanAgent() = default;

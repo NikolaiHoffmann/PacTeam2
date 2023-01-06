@@ -5,7 +5,7 @@
 * Entity clone constructor
 */
 Entity::Entity(const Entity& ent) {
-    id = ent.id;
+    //id = ent.id;
     nLives = ent.nLives;
     ticksPerMove = ent.ticksPerMove;
     pos = ent.pos;
@@ -20,18 +20,17 @@ Entity::Entity(int nLives, int ticksPerMove, Position pos, Direction direction):
 {
 }
 
-Entity::~Entity() {
-}
-
-int Entity::getId() {
+Entity::~Entity() = default;
+/*
+int Entity::getId() const {
     return id;
 }
-
-Direction Entity::getDirection() {
+*/
+Direction Entity::getDirection() const {
     return direction;
 }
 
-Position Entity::getPosition() {
+Position Entity::getPosition() const {
     return pos;
 }
 
@@ -43,14 +42,15 @@ void Entity::setDirection(Direction newDirection) {
     direction = newDirection;
 }
 
-void Entity::print() {
-    std::cout << id << "," << nLives << ",(" << pos.getX() << "," << pos.getY() << ")" << std::endl;
+void Entity::print() const {
+    //std::cout << id << "," << nLives << ",(" << pos.getX() << "," << pos.getY() << ")" << std::endl;
+    std::cout << "," << nLives << ",(" << pos.getX() << "," << pos.getY() << ")" << std::endl;
 }
 
 /*
 * Returns the position of the pink ghost's target when it is in chase mode
 */
-Position Entity::getPinkTarget()
+Position Entity::getPinkTarget() const
 {
     int newx = pos.getX(), newy = pos.getY();
     Position newpos;
@@ -79,7 +79,7 @@ Position Entity::getPinkTarget()
 /*
 * Returns the position of the orange ghost's target when it is in chase mode
 */
-Position Entity::getOrangeTarget()
+Position Entity::getOrangeTarget() const
 {
     int newx = pos.getX(), newy = pos.getY();
     switch (direction) {

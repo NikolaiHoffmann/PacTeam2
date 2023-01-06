@@ -1,6 +1,5 @@
 #include "Position.hpp"
 #include <cmath>
-#include <iostream>
 
 Position::Position(int x, int y) :
         x(x),
@@ -14,11 +13,11 @@ Position::Position() :
 {
 }
 
-bool Position::operator == (const Position& coords) {
+bool Position::operator == (const Position& coords) const {
     return (x == coords.x && y == coords.y);
 }
 
-Position Position::translate(Direction direction) {
+Position Position::translate(Direction direction) const {
     int new_x = x;
     int new_y = y;
     switch (direction) {
@@ -37,26 +36,26 @@ Position Position::translate(Direction direction) {
         case Null:
             break;
     }
-    return Position(new_x, new_y);
+    return {new_x, new_y};
 }
 
-int Position::getX() {
+int Position::getX() const {
     return x;
 }
 
-int Position::getY() {
+int Position::getY() const {
     return y;
 }
 
-int Position::manhattanDistance(Position endPos) {
+int Position::manhattanDistance(Position endPos) const {
     return std::abs(endPos.y - y) + std::abs(endPos.x - x);
 }
 
-bool Position::equals(Position pos) {
+bool Position::equals(Position pos) const {
     return (x == pos.x) && (y == pos.y);
 }
 
-Direction Position::getDirection(Position newPos) {
+Direction Position::getDirection(Position newPos) const {
     Position neighbors[4] = {
             translate(Direction::Up),
             translate(Direction::Down),
@@ -78,7 +77,7 @@ Direction Position::getDirection(Position newPos) {
     return Direction::Null;
 }
 
-Direction Position::direction(Position endPos) {
+Direction Position::direction(Position endPos) const {
     int diffX = endPos.getX() - x;
     int diffY = endPos.getY() - y;
 

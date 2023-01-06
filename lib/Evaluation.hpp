@@ -7,8 +7,8 @@ struct Evaluation {
 private:
     std::vector<int> ev_list;
 public:
-    Evaluation(std::vector<int> evaluations);
-    Evaluation(int eval);
+    explicit Evaluation(std::vector<int> evaluations);
+    explicit Evaluation(int eval);
     int compare(Evaluation e2);
     int getEvaluation(int index);
 };

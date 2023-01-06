@@ -6,7 +6,7 @@
 
 class Entity {
 private:
-    int id; //unique id of entity
+    //int id; //unique id of entity
     int nLives; //number of lives
     int ticksPerMove;
     Position pos;
@@ -14,16 +14,16 @@ private:
 public:
     Entity(const Entity& ent);
     Entity(int nLives, int ticksPerMove, Position pos, Direction direction);
-    ~Entity();
-    int getId();
-    Direction getDirection();
-    Position getPosition();
-    Position getPinkTarget();
-    Position getOrangeTarget();
+    virtual ~Entity();
+    // [[nodiscard]] int getId() const;
+    [[nodiscard]] Direction getDirection() const;
+    [[nodiscard]] Position getPosition() const;
+    [[nodiscard]] Position getPinkTarget() const;
+    [[nodiscard]] Position getOrangeTarget() const;
     void setPosition(Position position);
     void setDirection(Direction newDirection);
-    void print();
-    Entity* clone();
+    void print() const;
+    virtual Entity* clone();
 };
 
 #endif //PACTEAM2_ENTITY_HPP

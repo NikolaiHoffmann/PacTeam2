@@ -24,17 +24,17 @@ private:
 public:
     Ghost(const Ghost& gh);
     Ghost(int gId, int ticksPerMove, Position pos, Direction direction, Position scatter);
-    virtual ~Ghost() = 0;
-    Direction getNextDirection(PieceBoard* pb, Entity* pacman, Ghost* redGhost);
-    virtual Position getTargetPosition(Entity* pacman, Ghost* redGhost) = 0;
+    ~Ghost() override = 0;
+    Direction getNextDirection(PieceBoard* pb, Entity* pacman);
+    virtual Position getTargetPosition(Entity* pacman) = 0;
     void checkMode();
     void frighten();
     bool isChaseMode();
     bool isFrightenedMode();
     bool isScatterMode();
     void reverseDirection();
-    virtual Ghost* clone(); //maybe needs change
-    int getGhostId();
+    Ghost* clone() override; //maybe needs change
+    [[nodiscard]] int getGhostId() const;
 protected:
     Position scatterTarget;
 };

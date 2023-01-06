@@ -1,8 +1,6 @@
 #include "RedGhost.hpp"
 
-RedGhost::RedGhost(const RedGhost& g) : Ghost(g) {
-
-}
+RedGhost::RedGhost(const RedGhost& g) = default;
 
 RedGhost::RedGhost(int gId, int ticksPerMove, Position position, Direction direction, int width)
         :Ghost(gId, ticksPerMove, position, direction, Position(width,0))
@@ -14,7 +12,7 @@ RedGhost::RedGhost(int gId, int ticksPerMove, Position position, Direction direc
 * mode, or in scatter mode.
 * In chase mode, the red ghost's target tile is pacman's position.
 */
-Position RedGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
+Position RedGhost::getTargetPosition(Entity* pacman)
 {
     if (isChaseMode())
     {
@@ -24,7 +22,7 @@ Position RedGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
     {
         return scatterTarget;
     }
-    return Position(-1, -1);
+    return {-1, -1};
     //the mode is scatter, this function shouldnt have been called
 }
 

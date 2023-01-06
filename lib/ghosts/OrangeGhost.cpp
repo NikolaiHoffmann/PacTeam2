@@ -1,9 +1,7 @@
 #include "OrangeGhost.hpp"
-#include <math.h>
+#include <cmath>
 
-OrangeGhost::OrangeGhost(const OrangeGhost& g) : Ghost(g)
-{
-}
+OrangeGhost::OrangeGhost(const OrangeGhost& g) = default;
 
 OrangeGhost::OrangeGhost(int gId, int ticksPerMove, Position position, Direction direction, int width)
         :Ghost(gId, ticksPerMove, position, direction, Position(0,width))
@@ -21,7 +19,7 @@ Ghost* OrangeGhost::clone(){
 * is the pacman's position. Otherwise, it is the scatter position (edge
 * of the map).
 */
-Position OrangeGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
+Position OrangeGhost::getTargetPosition(Entity* pacman)
 {
     if (isChaseMode())
     {
@@ -47,6 +45,6 @@ Position OrangeGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
     {
         return scatterTarget;
     }
-    return Position(-1, -1);
+    return {-1, -1};
     //the mode is scatter, this function shouldnt have been called
 }

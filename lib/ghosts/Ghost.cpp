@@ -1,7 +1,7 @@
 #include "Ghost.hpp"
 #include "../Astar.hpp"
-#include <iostream>
-#include <stdlib.h> //srand, rand
+// #include <cstdlib> //srand, rand
+#include <random>
 
 Ghost::Ghost(const Ghost& gh) : Entity(gh) {
     ghostId = gh.ghostId;
@@ -19,7 +19,7 @@ Ghost::Ghost(int gId, int ticksPerMove, Position pos, Direction direction, Posit
     lastScatterTime = lastChaseTime = lastFrightenedTime = std::chrono::system_clock::now();
 }
 
-Ghost::~Ghost() {}
+Ghost::~Ghost() = default;
 
 /*
 * Receives the current state of the pieceBoard, and returns the next move
@@ -27,16 +27,20 @@ Ghost::~Ghost() {}
 * In this case, calls the A* algorithm, with origin in the ghost position,
 * and destination in the pacman's position.
 */
-Direction Ghost::getNextDirection(PieceBoard* pb, Entity* pacman, Ghost* redGhost) {
+Direction Ghost::getNextDirection(PieceBoard* pb, Entity* pacman) {
     Direction currentDirection = getDirection();
     if (mode == Mode::Frightened) {
         //return a random possible direction!
-        Direction d = (Direction) (rand() % 4);
+        //Direction d = (Direction) (rand() % 4);
+        std::random_device rd;
+        std::mt19937 engine(rd());
+        std::uniform_int_distribution<int> dist(0, 3);
+        auto d = (Direction) dist(engine);
         return d;
     }
     else {
         Position previousPosition = getPosition().translate(opposite(currentDirection));
-        Position endPosition = getTargetPosition(pacman, redGhost);
+        Position endPosition = getTargetPosition(pacman);
         Direction optimal = Astar::getOptimalDirection(pb, getPosition(), endPosition, previousPosition);
         return optimal;
     }
@@ -112,6 +116,6 @@ Ghost* Ghost::clone() {
     return nullptr;
 }
 
-int Ghost::getGhostId() {
+int Ghost::getGhostId() const {
     return ghostId;
 }

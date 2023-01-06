@@ -1,7 +1,6 @@
 #include "EvaluationFunction.hpp"
 #include "Evaluation.hpp"
 #include "BFS.hpp"
-#include <iostream>
 
 Evaluation EvaluationFunction::evaluate(Board* board) {
     //TODO

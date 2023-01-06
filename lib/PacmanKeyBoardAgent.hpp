@@ -4,7 +4,7 @@
 #include "PacmanAgent.hpp"
 
 class PacmanKeyBoardAgent : public PacmanAgent {
-    void updateState(Board* board);
+    void updateState(Board* board) final;
 };
 
 #endif //PACTEAM2_PACMANKEYBOARDAGENT_HPP

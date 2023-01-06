@@ -10,8 +10,8 @@
 
 class Board {
 private:
-    int width;
-    int height;
+    int width{};
+    int height{};
     //pieceBoard stores all the pieces inside our board
     PieceBoard* pieceBoard;
     //pacman entity
@@ -19,7 +19,7 @@ private:
     //initial position of pacman
     Position pacmanStartingPos;
     //array with the 4 ghosts
-    Ghost* ghosts[4];
+    Ghost* ghosts[4]{};
     //initial positions of the ghosts
     Position ghostsStartingPos[4];
     int points;
@@ -30,7 +30,7 @@ private:
     int pacmanDeaths;
 public:
     Board(const Board& board);
-    Board(std::string mapPath);
+    explicit Board(const std::string& mapPath);
     ~Board();
     void printBoard();
     void movePlayer();
@@ -44,15 +44,15 @@ public:
     std::vector<Board*> getGhostsChildStates();
     Entity* getPacman();
     PieceBoard* getPieceBoard();
-    int getWidth();
-    int getHeight();
-    int getPoints();
+    [[nodiscard]] int getWidth() const;
+    [[nodiscard]] int getHeight() const;
+    [[nodiscard]] int getPoints() const;
     Ghost* collisionGhosts(Position pos);
     void ghostEatPacman();
     void pacmanEatGhost(Ghost* g);
-    bool isGameOver();
+    [[nodiscard]] bool isGameOver() const;
     void increaseGameTick();
-    int getGameTick();
+    [[nodiscard]] int getGameTick() const;
 };
 
 #endif //PACTEAM2_BOARD_HPP

@@ -28,7 +28,7 @@ int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
     while (!nodeQueue.empty()) {
         std::pair<Position, int> node = nodeQueue.front();
         Position pos = node.first;
-        int depth = node.second;
+        depth = node.second;
 
         //the current node is the requested piece, so we return the depth (distance from the
         // initial node to the current node.
@@ -41,11 +41,11 @@ int BFS::getClosestPieceDistanceFromPacman(Piece p, Board* board) {
         //for every direction, if the position adjacent to the current isn't a wall,
         // we add it to the queue so as to analyse it later.
         for (int i = 0; i < 4; i++) {
-            Direction currentDirection = (Direction)i;
+            auto currentDirection = (Direction)i;
             Position newPos = pos.translate(currentDirection);
             int newPosY = newPos.getY(), newPosX = newPos.getX();
 
-            if (visited[newPosY][newPosX] == false &&
+            if (!visited[newPosY][newPosX] &&
                 !pb->isWall(newPos)) {
                 nodeQueue.push({ newPos, depth + 1 });
                 visited[newPosY][newPosX] = true;
@@ -91,7 +91,7 @@ std::vector<int> BFS::getNearestGhostsDistanceFromPacman(int nghosts, Board* boa
     while (!nodeQueue.empty()) {
         std::pair<Position, int> node = nodeQueue.front();
         Position pos = node.first;
-        int depth = node.second;
+        depth = node.second;
 
         if (board->collisionGhosts(pos)) {
             //this node collides with a ghost, so we return the distance from the origin
@@ -104,11 +104,11 @@ std::vector<int> BFS::getNearestGhostsDistanceFromPacman(int nghosts, Board* boa
 
         //iterate every direction
         for (int i = 0; i < 4; i++) {
-            Direction currentDirection = (Direction)i;
+            auto currentDirection = (Direction)i;
             Position newPos = pos.translate(currentDirection);
             int newPosY = newPos.getY(), newPosX = newPos.getX();
 
-            if (visited[newPosY][newPosX] == false &&
+            if (!visited[newPosY][newPosX] &&
                 !pb->isWall(newPos)) {
                 nodeQueue.push({ newPos, depth + 1 });
                 visited[newPosY][newPosX] = true;

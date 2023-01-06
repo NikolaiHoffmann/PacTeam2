@@ -1,11 +1,11 @@
 #include "BlueGhost.hpp"
-#include <math.h>
+#include <cmath>
 
-BlueGhost::BlueGhost(const BlueGhost& g) : Ghost(g) {
+BlueGhost::BlueGhost(const BlueGhost& g) : Ghost(g), redGhost(g.getRedGhost()) {
 }
 
-BlueGhost::BlueGhost(int gId, int ticksPerMove, Position position, Direction direction, int width)
-        :Ghost(gId, ticksPerMove, position, direction, Position(width,width))
+BlueGhost::BlueGhost(int gId, int ticksPerMove, Position position, Direction direction, int width, Ghost* redGhost)
+        :Ghost(gId, ticksPerMove, position, direction, Position(width,width)), redGhost(redGhost)
 {
 }
 
@@ -13,7 +13,7 @@ BlueGhost::BlueGhost(int gId, int ticksPerMove, Position position, Direction dir
 * Returns the target position of the blue ghost, whether it is in chase
 * mode, or in scatter mode.
 */
-Position BlueGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
+Position BlueGhost::getTargetPosition(Entity* pacman)
 {
     if (isChaseMode())
     {
@@ -22,10 +22,10 @@ Position BlueGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
         int redX = redGhostP.getX();
         int redY = redGhostP.getY();
 
-        int distance = 0;
-        distance = pow(redX - (targetP.getX()), 2);
-        distance += pow(redY - (targetP.getY()), 2);
-        distance = sqrt(distance);
+        int distance;
+        distance = static_cast<int>(pow(redX - (targetP.getX()), 2));
+        distance += static_cast<int>(pow(redY - (targetP.getY()), 2));
+        distance = static_cast<int>(sqrt(distance));
         distance /= 2;
 
         int newx = targetP.getX();
@@ -40,10 +40,14 @@ Position BlueGhost::getTargetPosition(Entity* pacman, Ghost* redGhost)
     {
         return scatterTarget;
     }
-    return Position(-1, -1);
+    return {-1, -1};
     //the mode is scatter, this function shouldnt have been called
 }
 
 Ghost* BlueGhost::clone(){
     return new BlueGhost(*this);
+}
+
+Ghost* BlueGhost::getRedGhost() const {
+    return redGhost;
 }

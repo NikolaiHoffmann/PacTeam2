@@ -1,5 +1,5 @@
 #include "Astar.hpp"
-#include <iostream>
+
 
 /*
 * This function receives the current state of the board, the start position,
@@ -13,7 +13,7 @@ Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, P
     open.reserve(100);
     closed.reserve(100);
     Node* currentNode = nullptr;
-    int currentNodeIndex = 0;
+    //int currentNodeIndex = 0;
 
     //pushes no open vector the initial node
     open.push_back(new Node(currentPosition));
@@ -50,8 +50,8 @@ Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, P
 
         //for each direction, we're going to check if the adjacent position in that
         // direction is a valid position. If so, we add it to open if it isn't already there.
-        for (int i = 0; i < 4; i++) {
-            Position currentNeighbor = (currentNode->pos).translate(directions[i]);
+        for (auto & direction : directions) {
+            Position currentNeighbor = (currentNode->pos).translate(direction);
 
             //if the current neighbor position is a wall, or if he's in the closed list,
             //go to the next neighbor
@@ -85,12 +85,10 @@ Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, P
         */
         auto current_it = closed.begin();
         currentNode = *current_it;
-        for (auto it = closed.begin(); it != closed.end(); it++) {
-            auto node = *it;
+        for (auto node : closed) {
             if ((node->pos).manhattanDistance(endPosition) < (currentNode->pos).manhattanDistance(endPosition)) {
                 currentNode = node;
                 //currentNodeIndex = i;
-                current_it = it;
             }
         }
     }
@@ -107,12 +105,10 @@ Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, P
     // order to get to the destination node.
     Direction ret = positionList[0].getDirection(positionList[1]);
     //here we free all the nodes created
-    for (auto it = open.begin(); it != open.end(); it++) {
-        auto node = *it;
+    for (auto node : open) {
         delete node;
     }
-    for (auto it = closed.begin(); it != closed.end(); it++) {
-        auto node = *it;
+    for (auto node : closed) {
         delete node;
     }
     return ret;
@@ -122,7 +118,7 @@ Direction Astar::getOptimalDirection(PieceBoard* pb, Position currentPosition, P
 * Gets a node list and a position, and returns the node with the given position,
 * or returns nullptr if the list doesnt contain a node with this position
 */
-Astar::Node* Astar::getNode(std::vector<Node*> nodeList, Position position) {
+Astar::Node* Astar::getNode(const std::vector<Node*>& nodeList, Position position) {
     for (Node* node : nodeList) {
         if (position.equals(node->pos)) {
             return node;
@@ -135,7 +131,7 @@ Astar::Node* Astar::getNode(std::vector<Node*> nodeList, Position position) {
 * Returns FCost. F cost is the sum of hcost and gcost, which are the distances to the destination
 * and the distance to the origin, respectively.
 */
-int Astar::Node::getFcost() {
+int Astar::Node::getFcost() const {
     return hcost + gcost;
 }
 

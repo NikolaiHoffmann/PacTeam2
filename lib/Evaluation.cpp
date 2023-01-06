@@ -1,8 +1,9 @@
 #include "Evaluation.hpp"
-#include <iostream>
+
+#include <utility>
 
 Evaluation::Evaluation(std::vector<int> evaluations) {
-    ev_list = evaluations;
+    ev_list = std::move(evaluations);
 }
 
 Evaluation::Evaluation(int eval) {
@@ -13,8 +14,8 @@ Evaluation::Evaluation(int eval) {
 
 
 int Evaluation::compare(Evaluation e2) {
-    std::vector<int>::iterator it1 = ev_list.begin();
-    std::vector<int>::iterator it2 = e2.ev_list.begin();
+    auto it1 = ev_list.begin();
+    auto it2 = e2.ev_list.begin();
 
     while ((it1 != ev_list.end()) && (it2 != e2.ev_list.end())) {
         int diff = *it1 - *it2;

@@ -12,10 +12,10 @@ private:
     int ticksPerMovePlayer; //if the value is 1, it means the player moves every tick.
     int ticksPerMoveGhosts;
 public:
-    Game(std::string mapPath, int tPS, int ticksPlayer, int ticksGhosts, PacmanAgent* _pacmanAgent);
+    Game(const std::string& mapPath, int tPS, int ticksPlayer, int ticksGhosts, PacmanAgent* _pacmanAgent);
     ~Game();
     void printBoard();
-    void movePlayer();
+    // void movePlayer();
     bool update();
     int elapsedGameTicks();
 };

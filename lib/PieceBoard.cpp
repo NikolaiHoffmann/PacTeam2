@@ -1,7 +1,5 @@
 #include "PieceBoard.hpp"
 
-#include <iostream>
-
 PieceBoard::PieceBoard(const PieceBoard& pb) : pieceRepresentation{ '#', '.', 'o', ' ' } {
     width = pb.width;
     height = pb.height;
@@ -23,7 +21,7 @@ PieceBoard::PieceBoard(int w, int h) : pieceRepresentation{ '#', '.', 'o', ' ' }
 
 PieceBoard::~PieceBoard() {
     delete[] board;
-    if (intersectionBoard != nullptr) delete[] intersectionBoard;
+    delete[] intersectionBoard;
 }
 
 void PieceBoard::setPiece(Position pos, Piece piece) {
@@ -50,7 +48,7 @@ void PieceBoard::setEmpty(Position pos) {
     setPiece(pos, Empty);
 }
 
-int PieceBoard::getIndex(Position position) {
+int PieceBoard::getIndex(Position position) const {
     return position.getY() * width + position.getX();
 }
 
@@ -109,13 +107,13 @@ void PieceBoard::generateIntersectionBoard() {
                 Piece right = getPiece(Position(x+1, y));
                 if ((up != Wall) + (down != Wall) + (left != Wall) + (right != Wall) >= 3) {
                     //then we are in an intersection
-                    intersectionBoard[currentIndex] = true;
+                    if(intersectionBoard) intersectionBoard[currentIndex] = true;
                 }
                 else {
-                    intersectionBoard[currentIndex] = false;
+                    if(intersectionBoard) intersectionBoard[currentIndex] = false;
                 }
             } else {
-                intersectionBoard[currentIndex] = false;
+                if(intersectionBoard) intersectionBoard[currentIndex] = false;
             }
             currentIndex++;
         }
@@ -143,7 +141,10 @@ void PieceBoard::generateIntersectionBoard() {
 }
 
 bool PieceBoard::isIntersection(Position pos) {
-    return intersectionBoard[getIndex(pos)]; //if true, the position is an intersection
+    bool iB = false;
+    if(intersectionBoard) iB = intersectionBoard[getIndex(pos)];
+    return iB; //if true, the position is an intersection
+
 }
 
 /*

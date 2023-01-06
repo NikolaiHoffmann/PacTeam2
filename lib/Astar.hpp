@@ -10,13 +10,13 @@ namespace Astar {
         Position pos;
         int hcost, gcost;
         Node* parent;
-        Node(Position position, Node* parent_ = nullptr);
-        int getFcost();
+        explicit Node(Position position, Node* parent_ = nullptr);
+        int getFcost() const;
     };
 
     Direction getOptimalDirection(PieceBoard* pb, Position currentPosition, Position endPosition, Position invalidPosition = Position(-1,-1));
 
-    Node* getNode(std::vector<Node*> nodeList, Position position);
+    Node* getNode(const std::vector<Node*>& nodeList, Position position);
 }
 
 #endif //PACTEAM2_ASTAR_HPP

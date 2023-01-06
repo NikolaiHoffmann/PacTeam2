@@ -9,9 +9,9 @@ class PacmanMiniMaxAgent : public PacmanAgent {
 private:
     EvaluationFunction* ef;
 public:
-    PacmanMiniMaxAgent(EvaluationFunction* _ef);
-    ~PacmanMiniMaxAgent();
-    void updateState(Board* board);
+    explicit PacmanMiniMaxAgent(EvaluationFunction* _ef);
+    ~PacmanMiniMaxAgent() override;
+    void updateState(Board* board) final;
     Evaluation minimax(Board* state, int depth, Evaluation alpha, Evaluation beta, bool maximizingPlayer);
 };
 #endif //PACTEAM2_PACMANMINIMAXAGENT_HPP

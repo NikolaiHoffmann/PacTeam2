@@ -5,7 +5,6 @@
 #include "ghosts/PinkGhost.hpp"
 #include "ghosts/BlueGhost.hpp"
 #include "ghosts/OrangeGhost.hpp"
-#include <windows.h>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -37,7 +36,7 @@ Board::Board(const Board& board) {
 /*
 * Creates a Board object, given the path to the map
 */
-Board::Board(string path) {
+Board::Board(const string& path) {
     int currentGhostId = 0;
     currentGameTick = 0;
     gameOver = false;
@@ -94,7 +93,7 @@ Board::Board(string path) {
             } else if (currentLine[i] == 'B') {
                 //we set the blue ghost
                 pieceBoard->setEmpty(position);
-                Ghost* ghost = new BlueGhost(currentGhostId, 2, Position(i, j), Direction::Right, width);
+                Ghost* ghost = new BlueGhost(currentGhostId, 2, Position(i, j), Direction::Right, width, ghosts[0]);
                 ghosts[currentGhostId] = ghost;
                 ghostsStartingPos[currentGhostId] = ghost->getPosition();
                 currentGhostId++;
@@ -125,8 +124,8 @@ Board::Board(string path) {
 Board::~Board() {
     delete pieceBoard;
     delete player;
-    for (int i = 0; i < 4; i++) {
-        delete ghosts[i];
+    for (auto & ghost : ghosts) {
+        delete ghost;
     }
 }
 
@@ -190,11 +189,11 @@ void Board::movePlayer() {
             if (pieceBoard->isBigFood(newPosition)) {
                 //if it is a big food, we set all the ghost's modes to Frightened.
                 // and we increase points by a lot
-                for (int i = 0; i < 4; i++) {
-                    if (ghosts[i] == nullptr) {
+                for (auto & ghost : ghosts) {
+                    if (ghost == nullptr) {
                         std::cout << "invalid ghost" << std::endl;
                     }
-                    ghosts[i]->frighten();
+                    ghost->frighten();
                 }
                 points += 200;
             } else points += 10;
@@ -204,7 +203,7 @@ void Board::movePlayer() {
         //set pacman's position to the new position
         player->setPosition(newPosition);
         Ghost* g;
-        if (g = collisionGhosts(newPosition)) {
+        if ((g = collisionGhosts(newPosition))) {
             //if there is a collision and the ghost is not frightened, the ghost eats pacman
             //otherwise pacman eats ghost
             if (g->isFrightenedMode()) pacmanEatGhost(g);
@@ -262,7 +261,6 @@ void Board::updateGhosts() {
         //therefore, we check if the current ghost is in frightened mode,
         //and if the currentGameTick is even. In this case we dont update the ghost
         if (ghost->isFrightenedMode() && currentGameTick % 2 == 0) continue;
-        Ghost* redGhost = ghosts[0];
         //we update the ghost's mode
         ghost->checkMode();
         Position ghostPos = ghost->getPosition();
@@ -272,7 +270,7 @@ void Board::updateGhosts() {
             * intersections have 3 or more surrounding squares
             */
             //we get the next direction of this ghost
-            Direction newDirection = ghost->getNextDirection(pieceBoard, player, redGhost);
+            Direction newDirection = ghost->getNextDirection(pieceBoard, player);
             ghost->setDirection(newDirection);
         } else if (pieceBoard->isDeadEnd(ghostPos)) {
             /*
@@ -352,7 +350,7 @@ std::vector<Board*> Board::getPacmanChildStates() {
     std::vector<Direction> possibleDirections;
     Position pacmanPos = player->getPosition();
     for (int i = 0; i < 4; i++) {
-        Direction currentDirection = (Direction)i;
+        auto currentDirection = (Direction)i;
         Position newPos = pacmanPos.translate(currentDirection);
         if (!pieceBoard->isWall(newPos)) {
             possibleDirections.push_back(currentDirection);
@@ -360,7 +358,7 @@ std::vector<Board*> Board::getPacmanChildStates() {
     }
     //at this point, possibleDirections contains all possible directions to move
     //directions in which the next position isnt a wall
-    std::vector<Direction>::iterator it = possibleDirections.begin();
+    auto it = possibleDirections.begin();
     for (; it != possibleDirections.end(); ++it) {
         //for each possible direction, we clone the current state,
         //and we move the pacman in the cloned state to the current direction.
@@ -394,15 +392,15 @@ PieceBoard* Board::getPieceBoard() {
     return pieceBoard;
 }
 
-int Board::getWidth() {
+int Board::getWidth() const {
     return width;
 }
 
-int Board::getHeight() {
+int Board::getHeight() const {
     return height;
 }
 
-int Board::getPoints() {
+int Board::getPoints() const {
     return points;
 }
 
@@ -411,9 +409,9 @@ int Board::getPoints() {
 * Otherwise returns the null pointer.
 */
 Ghost* Board::collisionGhosts(Position pos) {
-    for (int i = 0; i < 4; i++) {
-        Position posGhost = ghosts[i]->getPosition();
-        if (pos.equals(posGhost)) return ghosts[i];
+    for (auto & ghost : ghosts) {
+        Position posGhost = ghost->getPosition();
+        if (pos.equals(posGhost)) return ghost;
     }
     return nullptr;
 }
@@ -441,7 +439,7 @@ void Board::pacmanEatGhost(Ghost* g) {
     g->setPosition(ghostsStartingPos[g->getGhostId()]);
 }
 
-bool Board::isGameOver() {
+bool Board::isGameOver() const {
     return gameOver;
 }
 
@@ -449,6 +447,6 @@ void Board::increaseGameTick() {
     currentGameTick++;
 }
 
-int Board::getGameTick() {
+int Board::getGameTick() const {
     return currentGameTick;
 }

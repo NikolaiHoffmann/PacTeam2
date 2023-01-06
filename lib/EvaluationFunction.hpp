@@ -6,7 +6,7 @@
 
 class EvaluationFunction {
 public:
-    Evaluation evaluate(Board* board);
+    static Evaluation evaluate(Board* board);
 };
 
 #endif //PACTEAM2_EVALUATIONFUNCTION_HPP
