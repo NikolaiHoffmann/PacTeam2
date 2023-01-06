@@ -27,3 +27,7 @@ bool Game::update() {
     board->increaseGameTick();
     return !board->isGameOver();
 }
+
+int Game::elapsedGameTicks() {
+    return board->getGameTick();
+}

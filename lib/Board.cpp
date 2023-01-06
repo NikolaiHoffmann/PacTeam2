@@ -448,3 +448,7 @@ bool Board::isGameOver() {
 void Board::increaseGameTick() {
     currentGameTick++;
 }
+
+int Board::getGameTick() {
+    return currentGameTick;
+}

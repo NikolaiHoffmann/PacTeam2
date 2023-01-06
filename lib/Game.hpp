@@ -17,6 +17,7 @@ public:
     void printBoard();
     void movePlayer();
     bool update();
+    int elapsedGameTicks();
 };
 
 #endif //PACTEAM2_GAME_HPP

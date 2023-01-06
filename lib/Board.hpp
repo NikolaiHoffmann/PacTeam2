@@ -52,6 +52,7 @@ public:
     void pacmanEatGhost(Ghost* g);
     bool isGameOver();
     void increaseGameTick();
+    int getGameTick();
 };
 
 #endif //PACTEAM2_BOARD_HPP

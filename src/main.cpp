@@ -19,6 +19,7 @@ int main() {
     We should find an alternative to work on linux too.
     */
 
+    steady_clock::time_point begin = std::chrono::steady_clock::now();
     game.printBoard();
     sleep_for(timeout); //sleep interval
     while (game.update()) {
@@ -29,6 +30,9 @@ int main() {
     //cycle ends when the game is over
     system("cls");
     game.printBoard(); //prints final board state
+    steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "Total game ticks: " << game.elapsedGameTicks() << std::endl;
+    std::cout << "Total elapsed time: " << duration_cast<seconds>(end-begin).count() << std::endl;
 
     return 0;
 }
