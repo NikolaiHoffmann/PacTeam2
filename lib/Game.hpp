@@ -8,14 +8,11 @@ class Game {
 private:
     PacmanAgent* pacmanAgent;
     Board* board;
-    int ticksPerSecond;
-    int ticksPerMovePlayer; //if the value is 1, it means the player moves every tick.
-    int ticksPerMoveGhosts;
+
 public:
-    Game(const std::string& mapPath, int tPS, int ticksPlayer, int ticksGhosts, PacmanAgent* _pacmanAgent);
+    Game(const std::string& mapPath, PacmanAgent* _pacmanAgent);
     ~Game();
     void printBoard();
-    // void movePlayer();
     bool update();
     int elapsedGameTicks();
 };

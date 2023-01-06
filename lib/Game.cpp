@@ -2,14 +2,11 @@
 
 
 
-Game::Game(const std::string& mapPath, int tPS, int ticksPlayer, int ticksGhosts, PacmanAgent* _pacmanAgent) :
+Game::Game(const std::string& mapPath, PacmanAgent* _pacmanAgent) :
         pacmanAgent(_pacmanAgent),
-        board(new Board(mapPath)),
-        ticksPerSecond(tPS)
-
+        board(new Board(mapPath))
 {
-    ticksPerMovePlayer = ticksPlayer;
-    ticksPerMoveGhosts = ticksGhosts;
+
 }
 
 Game::~Game() {
