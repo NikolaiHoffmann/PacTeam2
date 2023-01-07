@@ -10,6 +10,7 @@ private:
     Board* board;
 
 public:
+    Game() = default;
     Game(const std::string& mapPath, PacmanAgent* _pacmanAgent);
     ~Game();
     void printBoard();
